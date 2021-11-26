@@ -3,13 +3,15 @@
 #include "juegox.h"
 #include <cstdlib>
 #include <fstream>
+#include <sstream>
 #include "Stack.h"
 #include "ctime"
 
 using namespace std;
-Stack<int>pila;
 
-juegox::juegox(sf::Vector2f resolucion, sf::String titulo) {
+juegox::juegox(sf::Vector2i resolucion, const sf::String &titulo) {
+
+    srand(time(nullptr));
     game_over = false;
     fps = 60;
 
@@ -23,24 +25,9 @@ juegox::juegox(sf::Vector2f resolucion, sf::String titulo) {
     evento1 = new sf::Event;
 
     cargar_graficos();
-
-    sumatoria = sumar_pila(pila);
-    ofstream ofs;
-    ofs.open("Datos_Juego.txt");
-    ofs << "Puntos totales en esta partida: " << endl;
-    ofs << sumatoria << endl;
-    ofs << "Vidas totales en esta partida: " << endl;
-    ofs << vidas << endl;
-    ofs.close();
-
-
-
-    gameloop();
-
 }
 
 void juegox::gameloop() {
-    srand(time(NULL));
 
     while (!game_over) {
         ventana1->clear();
@@ -50,36 +37,20 @@ void juegox::gameloop() {
         cout << tiempo1->asSeconds() << endl;
         tiempo2 = tiempo1->asSeconds();
         tiempo3 = tiempo1->asSeconds();
-        posx1 = rand() % 800 + 1;
-        posy1 = rand() % 600 + 1;
-        posx2 = rand() % 800 + 1;
-        posy2 = rand() % 600 + 1;
-        posx3 = rand() % 800 + 1;
-        posy3 = rand() % 600 + 1;
-        posx4 = rand() % 800 + 1;
-        posy4 = rand() % 600 + 1;
-        while(tiempo3>3) {
-            spr_zombie1.setPosition(posx1, posy1);
-            spr_zombie1.setColor(sf::Color(255, 255, 255, 255));
-            ventana1->draw(spr_zombie1);
-
-            spr_zombie2.setPosition(posx2, posy2);
-            spr_zombie2.setColor(sf::Color(255, 255, 255, 255));
-            ventana1->draw(spr_zombie2);
-
-            spr_zombie3.setPosition(posx3, posy3);
-            spr_zombie3.setColor(sf::Color(255, 255, 255, 255));
-            ventana1->draw(spr_zombie3);
-
-            spr_zombie4.setPosition(posx4, posy4);
-            spr_zombie1.setColor(sf::Color(255, 255, 255, 255));
-            ventana1->draw(spr_zombie4);
+        for (int i = 0; i < 3; ++i) {
+            posx[i] = rand() % 800 + 1;
+            posy[i] = rand() % 600 + 1;
+        }
+        while (tiempo3 > 3) {
+            for (int i = 0; i < 3; ++i) {
+                spr_zombie[i].setPosition(posx[i], posy[i]);
+                spr_zombie[i].setColor(sf::Color(255, 255, 255, 255));
+                ventana1->draw(spr_zombie[i]);
+            }
 
             /*spr_princess.setPosition(posx4, posy4);
             spr_princess.setColor(sf::Color(255, 255, 255, 255));
             ventana1->draw(spr_princess);*/
-
-
 
             tiempo3 = 0;
         }
@@ -97,37 +68,31 @@ void juegox::gameloop() {
 
         ventana1->display();
     }
+
+    sumar_pila(pila);
 }
 
 void juegox::cargar_graficos() {
-    srand(time(NULL));
-    txt_fondo.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\bosque.png");
+    txt_fondo.loadFromFile("bosque.png");
     spr_fondo.setTexture(txt_fondo);
     spr_fondo.setScale((float) ventana1->getSize().x / txt_fondo.getSize().x,
                        (float) ventana1->getSize().y / txt_fondo.getSize().y);
 
-    txt_mira.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\mira.png");
+    txt_mira.loadFromFile("mira.png");
     spr_mira.setTexture(txt_mira);
     spr_mira.setScale(0.4f, 0.4f);
     spr_mira.setOrigin(txt_mira.getSize().x / 2, txt_mira.getSize().y / 2);
 
-    txt_zombie1.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\z1.png");
-    spr_zombie1.setTexture(txt_zombie1);
 
-
-    txt_zombie2.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\z2.png");
-    spr_zombie2.setTexture(txt_zombie2);
-
-    txt_zombie3.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\z3.png");
-    spr_zombie3.setTexture(txt_zombie3);
-
-    txt_zombie4.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\z4.png");
-    spr_zombie4.setTexture(txt_zombie4);
-
+    for (int i = 0; i < 3; ++i) {
+        stringstream png;
+        png << "z" << i << ".png";
+        txt_zombie[i].loadFromFile(png.str());
+        spr_zombie[i].setTexture(txt_zombie[i]);
+    }
     //txt_princess.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\princess1.png");
     //spr_princess.setTexture(txt_princess);
     //spr_princess.setScale(0.5f, 0.5f);
-
 }
 
 void juegox::procesar_eventos() {
@@ -150,30 +115,17 @@ void juegox::procesar_eventos() {
             case sf::Event::MouseButtonPressed:
                 if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                     sf::FloatRect pos_mouse(spr_mira.getPosition(), {100, 100});
-                    if (spr_zombie1.getGlobalBounds().intersects(pos_mouse)) {
-                        spr_zombie1.setColor(sf::Color::Green);
-                        puntos++;
-                        pila.push(1);
-                    }
-                    if (spr_zombie2.getGlobalBounds().intersects(pos_mouse)) {
-                        spr_zombie2.setColor(sf::Color::Green);
-                        puntos++;
-                        pila.push(1);
-                    }
-                    if (spr_zombie3.getGlobalBounds().intersects(pos_mouse)) {
-                        spr_zombie3.setColor(sf::Color::Green);
-                        puntos++;
-                        pila.push(1);
-                    }
-                    if (spr_zombie4.getGlobalBounds().intersects(pos_mouse)) {
-                        spr_zombie4.setColor(sf::Color::Green);
-                        puntos++;
-                        pila.push(1);
+                    for (int i = 0; i < 3; ++i) {
+                        if (spr_zombie[i].getGlobalBounds().intersects(pos_mouse)) {
+                            spr_zombie[i].setColor(sf::Color::Green);
+                            puntos++;
+                            pila.push(1);
+                        }
                     }
                     //if (spr_princess.getGlobalBounds().intersects(pos_mouse)) {
-                      //  spr_princess.setColor(sf::Color::Red);
-                       // vidas --;
-                        //pila.push(1);
+                    //  spr_princess.setColor(sf::Color::Red);
+                    // vidas --;
+                    //pila.push(1);
                     break;
                 }
         }
@@ -185,13 +137,18 @@ void juegox::procesar_mouse() {
     posicion_mouse = (sf::Vector2i) ventana1->mapPixelToCoords(posicion_mouse);
 }
 
-int juegox::sumar_pila(Stack<int> pila) {
+void juegox::sumar_pila(Stack<int> pila) {
 
     int sumatoria = 0;
     while (!pila.isEmpty()) {
         sumatoria = sumatoria + pila.peek();
         pila.pop();
     }
-    return sumatoria;
-
+    ofstream ofs;
+    ofs.open("Datos_Juego.txt");
+    ofs << "Puntos totales en esta partida: " << endl;
+    ofs << sumatoria << endl;
+    ofs << "Vidas totales en esta partida: " << endl;
+    ofs << vidas << endl;
+    ofs.close();
 }

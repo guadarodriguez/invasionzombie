@@ -10,5 +10,6 @@ int main(int argc, char *args[]) {
     srand(time(NULL));
     juegox partida1({800, 600}, "ATAQUE ZOMBIE");
 
+    partida1.gameloop();
     return 0;
 }
