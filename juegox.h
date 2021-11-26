@@ -7,7 +7,7 @@
 #endif //INFORMATICA2_JUEGOX_H
 
 #include <iostream>
-#include "SFML\Graphics.hpp"
+#include "SFML/Graphics.hpp"
 #include <cstdlib>
 #include "Stack.h"
 

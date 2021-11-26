@@ -1,3 +1,5 @@
+#ifndef INFORMATICA2_STACK_H
+#define INFORMATICA2_STACK_H
 #include "Node.h"
 
 template<typename T>
@@ -43,3 +45,5 @@ T Stack<T>::peek() {
     return top->getData();
 }
 
+
+#endif //INFORMATICA2_STACK_H

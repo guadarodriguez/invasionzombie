@@ -1,3 +1,5 @@
+#ifndef INFORMATICA2_NODO_H
+#define INFORMATICA2_NODO_H
 template <typename T>
 class Node {
 private:
@@ -39,3 +41,5 @@ Node<T>::Node(T data, Node<T> *next) {
     this->next = next;
     this->data = data;
 }
+
+#endif //INFORMATICA2_NODO_H

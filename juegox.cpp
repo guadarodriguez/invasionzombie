@@ -1,5 +1,5 @@
 #include <iostream>
-#include "SFML\Graphics.hpp"
+#include "SFML/Graphics.hpp"
 #include "juegox.h"
 #include <cstdlib>
 #include <fstream>
@@ -70,7 +70,7 @@ void juegox::gameloop() {
         cout << tiempo1->asSeconds() << endl;
         cout << puntos << endl;
         tiempo2 = tiempo1->asSeconds();
-        sumar_pila(pila);
+        // sumar_pila(pila); no implementada
 
         if (tiempo2 > 15) {
             exit(1);
@@ -81,27 +81,27 @@ void juegox::gameloop() {
 
 void juegox::cargar_graficos() {
     srand(time(NULL));
-    txt_fondo.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\assets\\bosque.png");
+    txt_fondo.loadFromFile("bosque.png");
     spr_fondo.setTexture(txt_fondo);
     spr_fondo.setScale((float) ventana1->getSize().x / txt_fondo.getSize().x,
                        (float) ventana1->getSize().y / txt_fondo.getSize().y);
 
-    txt_mira.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\assets\\mira.png");
+    txt_mira.loadFromFile("mira.png");
     spr_mira.setTexture(txt_mira);
     spr_mira.setScale(0.4f, 0.4f);
     spr_mira.setOrigin(txt_mira.getSize().x / 2, txt_mira.getSize().y / 2);
 
-    txt_zombie1.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\assets\\z1.png");
+    txt_zombie1.loadFromFile("z1.png");
     spr_zombie1.setTexture(txt_zombie1);
 
 
-    txt_zombie2.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\assets\\z2.png");
+    txt_zombie2.loadFromFile("z2.png");
     spr_zombie2.setTexture(txt_zombie2);
 
-    txt_zombie3.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\assets\\z3.png");
+    txt_zombie3.loadFromFile("z3.png");
     spr_zombie3.setTexture(txt_zombie1);
 
-    txt_zombie4.loadFromFile("C:\\Users\\guada\\CLionProjects\\invasionzombie\\assets\\z4.png");
+    txt_zombie4.loadFromFile("z4.png");
     spr_zombie4.setTexture(txt_zombie4);
 
 }
