@@ -16,7 +16,7 @@ using namespace std;
 
 class juegox {
 public:
-    juegox(sf::Vector2i resolucion, const sf::String& titulo);
+    juegox(sf::Vector2i resolucion, const sf::String &titulo);
 
     void gameloop();
 
@@ -24,9 +24,7 @@ public:
 
     void procesar_eventos();
 
-    void procesar_mouse();
-
-    void sumar_pila(Stack<int> pila);
+    void sumar_pila();
 
 
 private:
@@ -41,33 +39,17 @@ private:
     sf::Texture txt_zombie[3];
     sf::Sprite spr_zombie[3];
 
-
-    sf::Texture txt_princess;
-    sf::Sprite spr_princess;
-
-    sf::Vector2i posicion_mouse;
+    int cont_seg;
 
     int puntos = 0;
     int vidas = 10;
-    sf::Clock *reloj1;
-    sf::Time *tiempo1;
-    float tiempo2;
-    float tiempo3;
-
 
     sf::Event *evento1;
 
-    float posx[4];
-    float posy[4];
+    sf::Vector2f pos[4];
     // LinkedList<float> pos;
-
-    int sumatoria;
 
     bool game_over;
 
-    Stack<int>pila;
-    int fps;
-    //sf::Font *fuente;
-    //sf::Text txt_name;
-
+    Stack<int> pila;
 };
