@@ -26,7 +26,7 @@ public:
 
     void procesar_mouse();
 
-    void sumar_pila(Stack<int>);
+    int sumar_pila(Stack<int>);
 
 
 private:
@@ -50,9 +50,13 @@ private:
     sf::Texture txt_zombie4;
     sf::Sprite spr_zombie4;
 
+    sf::Texture txt_princess;
+    sf::Sprite spr_princess;
+
     sf::Vector2i posicion_mouse;
 
     int puntos = 0;
+    int vidas = 10;
     sf::Clock *reloj1;
     sf::Time *tiempo1;
     float tiempo2;
@@ -70,10 +74,12 @@ private:
     float posx4;
     float posy4;
 
+    int sumatoria;
+
     bool game_over;
 
     int fps;
-    sf::Font *fuente;
-    sf::Text txt_name;
+    //sf::Font *fuente;
+    //sf::Text txt_name;
 
 };
